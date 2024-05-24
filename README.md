@@ -11,7 +11,6 @@ Using Nextjs, Typescript, route API
     git clone https://github.com/zhengwuqingling28/nextjs-blog.git
     ```
 1.  **Step 2.**
-    ```
     install package
     ```sh
     npm i
