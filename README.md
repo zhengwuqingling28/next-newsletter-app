@@ -8,7 +8,7 @@ Using Nextjs, Typescript, route API
 1.  **Step 1.**
     Clone the project
     ```sh
-    git clone https://github.com/zhengwuqingling28/nextjs-blog.git
+    git clone https://github.com/zhengwuqingling28/next-newsletter-app.git
     ```
 1.  **Step 2.**
     install package
