@@ -2,18 +2,27 @@ import fs from "node:fs";
 import path from "node:path";
 import { v4 as uuidv4 } from "uuid";
 
+interface ApiResponse {
+  data: any;
+  success: boolean;
+  message: string;
+}
+
 export const GET = (request: Request) => {
-  const filePath = buildFeedbackPath();
+  const filePath: string = buildFeedbackPath();
 
   // Extract feedback data
   const data = extractFeedback(filePath);
 
-  return new Response(
-    JSON.stringify({ data, success: true, message: "successfully" }),
-    {
-      headers: { "Content-Type": "application/json" },
-    }
-  );
+  const response: ApiResponse = {
+    data,
+    success: true,
+    message: "successfully",
+  };
+
+  return new Response(JSON.stringify(response), {
+    headers: { "Content-Type": "application/json" },
+  });
 };
 
 export const POST = async (request: Request) => {
@@ -21,7 +30,7 @@ export const POST = async (request: Request) => {
 
   const newComment = { id: uuidv4(), ...requestData };
 
-  const filePath = buildFeedbackPath();
+  const filePath: string = buildFeedbackPath();
 
   // Extract feedback data
   let data = extractFeedback(filePath);
@@ -37,23 +46,22 @@ export const POST = async (request: Request) => {
   // Write the updated data back to the file
   fs.writeFileSync(filePath, JSON.stringify(data), "utf-8"); // Specify encoding to write as string
 
-  return new Response(
-    JSON.stringify({
-      data: newComment,
-      success: true,
-      message: "successfully",
-    }),
-    {
-      headers: { "Content-Type": "application/json" },
-    }
-  );
+  const response: ApiResponse = {
+    data: newComment,
+    success: true,
+    message: "successfully",
+  };
+
+  return new Response(JSON.stringify(response), {
+    headers: { "Content-Type": "application/json" },
+  });
 };
 
 const buildFeedbackPath = () => {
   return path.join(process.cwd(), "data", "comment.json");
 };
 
-const extractFeedback = (filePath) => {
+const extractFeedback = (filePath: string) => {
   // Check if the file exists before reading
   if (fs.existsSync(filePath)) {
     // Read the file and parse it as JSON

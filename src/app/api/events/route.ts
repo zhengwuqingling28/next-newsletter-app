@@ -1,25 +1,34 @@
 import fs from "node:fs";
 import path from "node:path";
 
+interface ApiResponse {
+  data: any;
+  success: boolean;
+  message: string;
+}
+
 export const GET = (request: Request) => {
-  const filePath = buildFeedbackPath();
+  const filePath: string = buildFeedbackPath();
 
   // Extract feedback data
   const data = extractFeedback(filePath);
 
-  return new Response(
-    JSON.stringify({ data, success: true, message: "successfully" }),
-    {
-      headers: { "Content-Type": "application/json" },
-    }
-  );
+  const response: ApiResponse = {
+    data,
+    success: true,
+    message: "successfully",
+  };
+
+  return new Response(JSON.stringify(response), {
+    headers: { "Content-Type": "application/json" },
+  });
 };
 
 const buildFeedbackPath = () => {
   return path.join(process.cwd(), "data", "event.json");
 };
 
-const extractFeedback = (filePath) => {
+const extractFeedback = (filePath: string) => {
   // Check if the file exists before reading
   if (fs.existsSync(filePath)) {
     // Read the file and parse it as JSON
